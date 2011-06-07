@@ -1,0 +1,336 @@
+\documentclass[]{beamer}
+
+\usepackage[cm-default]{fontspec}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+\setmainfont[Mapping=tex-text]{DejaVu Sans}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+
+\usetheme{Pittsburgh}
+\useinnertheme{rounded}
+\usefonttheme{serif}
+\usecolortheme{beaver}
+
+\title{Εισαγωγή στο Git}
+\author{Σταύρος Αρώνης}
+\date{8 Ιουνίου 2011}
+\institute{Κοινότητα Ελεύθερου Λογισμικού ΕΜΠ}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{
+  \leavevmode
+  \hbox{
+    \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.5ex,dp=1.125ex,right]
+      {author in head/foot}
+      \usebeamerfont{title in head/foot}
+      \insertshortauthor
+      \hspace{.3cm}
+    \end{beamercolorbox}%
+    
+    \begin{beamercolorbox}[wd=.40\paperwidth,ht=2.5ex,dp=1.125ex,left]
+      {title in head/foot}
+      \usebeamerfont{author in head/foot}\
+      \hspace{.3cm}
+      \insertshorttitle
+    \end{beamercolorbox}
+    
+    \begin{beamercolorbox}[wd=.10\paperwidth,ht=2.5ex,dp=1.125ex,center]
+      {title in head/foot}
+      \usebeamerfont{author in head/foot}
+      \insertframenumber/\inserttotalframenumber
+    \end{beamercolorbox}
+  }
+  \vskip0pt
+}
+
+%% \AtBeginSection[]
+%% {
+%%   \begin{frame}<beamer>
+%%     \frametitle{Επισκόπηση}
+%%     \tableofcontents[currentsection, hideothersubsections]
+%%   \end{frame}
+%% }
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \begin{center}
+    \includegraphics[height=2cm]{Fosstux.png}
+    \hspace{1cm}
+    \includegraphics[height=2cm]{git-logo.png}
+  \end{center}
+\end{frame}
+
+\section*{Επισκόπηση}
+\begin{frame}
+  \tableofcontents[hidesubsections]
+\end{frame}
+
+\section{Revision Control Systems}
+
+\subsection{Ορισμός}
+
+\begin{frame}
+  \frametitle{Revision Control Systems}
+  \begin{center}
+    \includegraphics[height=7cm]{hotfix-branches1.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Revision Control Systems}
+  \begin{itemize}
+    \item Χρησιμοποιούνται σε projects με πολύ κώδικα ή/και πολλούς
+      collaborators.
+    \item Καταγράφουν συστηματικά:
+      \begin{itemize}
+        \item ποιός
+        \item πως
+        \item πότε και
+        \item γιατί
+      \end{itemize}
+      αλλάζει τον κώδικα.
+    \item Μπορούν να χρησιμοποιηθούν αποτελεσματικά και σε εργασίες που δεν
+      περιέχουν κώδικα αλλά γενικότερο text περιεχόμενο (\TeX{} documents,
+      etc)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Λεξιλόγιο}
+  \begin{itemize}
+  \item \textbf{Repository:} Το φυσικό σημείο στο οποίο βρίσκονται αποθηκευμένα
+    τα αρχεία μαζί με όλες τις πληροφορίες του RCS (local ή remote).
+  \item \textbf{Commit:} Ένα σύνολο λογικά συσχετιζόμενων αλλαγών στα
+    παρακολουθούμενα αρχεία (edit, add, delete) μαζί με πληροφορίες για το ποιός
+    τις έκανε, πότε και γιατί.
+  \item \textbf{Branch:} Όταν υπάρχει ανάγκη για απόσχιση από το ``κεντρικό
+    σώμα'' του κώδικα (π.χ. για ένα experimental feature ή bug fix), ένα branch
+    κρατάει τα νέα commits χωρίς να επηρεάζει το σώμα του κώδικα.
+  \item \textbf{Tag:} Δείκτης σε μια συγκεκριμένη έκδοση του κώδικα.
+  \item \textbf{Merge:} Η διαδικασία ενσωμάτωσης ενός branch σε ένα άλλο.
+  \end{itemize}
+\end{frame}
+
+\section{Distributed RCS}
+
+\begin{frame}
+  \frametitle{Distributed RCS}
+  \begin{center}
+    \includegraphics[height=7cm]{centr-decentr.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Central RCS}
+  \begin{itemize}
+    \item \textbf{Βασική ιδέα:} Η ``επίσημη έκδοση'' του κώδικα βρίσκεται σε ένα
+      κεντρικό repository.
+    \item Κάθε commit αποθηκεύεται κεντρικά και μόνο εκεί.
+      \begin{center}
+        \includegraphics[height=2cm]{social_network.jpg} \hspace{0.5em}
+      \end{center}\pause
+      \begin{itemize}
+      \item Δεν μπορεί ο καθένας να κάνει commit.
+        \includegraphics[width=1em]{Lock1.png} \pause
+      \item Πρέπει να υπάρχει σύνδεση στο δίκτυο για πρόσβαση στα commits (log,
+        history, diff, blame).
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Distributed RCS}
+  \begin{itemize}
+    \item \textbf{Δεν υπάρχει ``επίσημη έκδοση'' του κώδικα! Κάθε developer έχει
+      δικό του repository!}\pause
+    \item Οι collaborators έχουν \textbf{όλο} το project τοπικά:
+      \begin{itemize}
+        \item Κώδικας
+        \item Commits
+      \end{itemize}\pause
+    \item Κάνουν commit τοπικά, χωρίς να επηρεάζουν κανέναν άλλο.\pause
+    \item ``Πηδάνε'' από το ένα topic στο άλλο δημιουργώντας branches
+      τοπικά.\pause
+    \item Ανταλλάσσουν commits και συγχρονίζουν τα repositories τους.
+  \end{itemize}
+\end{frame}
+
+\section{Git}
+
+\begin{frame}
+  \frametitle{Git}
+  \framesubtitle{\url{http://git-scm.com/}}
+  \begin{itemize}
+  \item Projects using Git
+    \begin{itemize}
+    \item Git
+    \item Linux Kernel
+    \item Perl
+    \item Eclipse
+    \item Gnome
+    \item KDE
+    \item Qt
+    \item Ruby on Rails
+    \item Android
+    \item PostgreSQL
+    \item Debian
+    \item X.org
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Git}
+  \begin{itemize}
+    \item Κάποια από τα χαρακτηριστικά που κάνουν το git να ξεχωρίζει:
+      \begin{itemize}
+        \item Εύκολο branching \pause
+        \item \textbf{Εύκολο merging} \pause
+        \item Έλεγχος εγκυρότητας των δεδομένων (SHA1)\pause
+        \item Απελπιστικά γρήγορο! \pause
+        \item Awesome UI \pause
+      \end{itemize}
+    \item Και όπως και άλλα πιθανώς DRCS: \pause
+      \begin{itemize}
+        \item Network of trust security model \pause
+        \item Full access to logs and diffs
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Github}
+  \framesubtitle{\url{https://github.com/}}
+  Χρησιμεύει σαν ένα κεντρικό sync point:
+  \begin{center}
+    \includegraphics[height=7cm]{centr-decentr.png}
+  \end{center}
+\end{frame}
+
+\section{Using Git}
+
+\begin{frame}
+  \frametitle{Using Git}
+  \tableofcontents[currentsection, hideothersubsections]
+\end{frame}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{Προκαταρκτικά...}
+  \begin{itemize}
+    \item Στήσιμο pseudo-central server ή Λογαριασμός στο github
+    \item SSH keys για πιστοποίηση των collaborators
+    \item Στήσιμο repository
+  \end{itemize}
+\end{frame}
+
+\subsection{New project}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{New project}
+  \begin{itemize}
+    \item git init
+    \item git add
+    \item git commit (-m, --amend)
+    \item git diff(tool)
+    \item git remote add
+    \item git push
+  \end{itemize}
+\end{frame}
+
+\subsection{Existing project}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{Existing project}
+  \begin{itemize}
+    \item GitHub fork
+    \item git clone
+    \item git add
+    \item git commit (-m, --amend)
+    \item git push
+  \end{itemize}
+\end{frame}
+
+\subsection{Collaboration}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{Collaboration}
+  \begin{itemize}
+    \item git remote update
+    \item git merge
+    \item git pull
+    \item git mergetool
+  \end{itemize}
+\end{frame}
+
+\subsection{Experimentation}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{Experimentation}
+  \begin{itemize}
+    \item git branch
+    \item git checkout
+    \item git push remote new\_branch
+    \item make
+    \item git merge (again)
+  \end{itemize}
+\end{frame}
+
+\subsection{History}
+
+\begin{frame}
+  \frametitle{Using git}
+  \framesubtitle{History}
+  \begin{itemize}
+    \item git log
+    \item git tree
+    \item git show
+    \item gitk
+  \end{itemize}
+\end{frame}
+
+\subsection{Advanced}
+
+\begin{frame}
+  \frametitle{Advanced}
+  \framesubtitle{History}
+  \begin{itemize}
+    \item Let's find the bug: git bisect
+    \item Polish a patch: git rebase
+    \item ACHIEVEMENTS!
+  \end{itemize}
+\end{frame}
+
+\section*{References}
+
+\begin{frame}
+  \frametitle{References}
+  \begin{itemize}
+    \item Github tutorials
+    \item Git tutorials
+    \item Git man pages
+    \item Torvalds talk @ Google
+    \item Full management model:
+      \url{http://nvie.com/posts/a-successful-git-branching-model/}
+    \item Git achievements
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Git tutorial}
+    \begin{center}
+      Thank you!
+    \end{center}
+\end{frame}
+
+\end{document}
+
+% xelatex -interaction=nonstopmode gittalk.tex; evince gittalk.pdf
