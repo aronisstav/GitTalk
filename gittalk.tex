@@ -14,7 +14,7 @@
 \usecolortheme{beaver}
 
 \title{Εισαγωγή στο Git}
-\author{Σταύρος Αρώνης \\ aronisstav@gmail.com}
+\author[Σταύρος Αρώνης]{Σταύρος Αρώνης \\ \texttt{aronisstav@gmail.com}}
 \date{8 Ιουνίου 2011}
 \institute{Κοινότητα Ελεύθερου Λογισμικού ΕΜΠ}
 
@@ -226,8 +226,8 @@
   \frametitle{Git Λεξιλόγιο}
   \begin{itemize}
   \item \textbf{remote:} Alias για το url ενός repository.
-  \item \textbf{origin:} Κύριο remote για ένα repository που είναι συγχρονισμένο
-    ένα άλλο στο GitHub.
+  \item \textbf{origin:} Κύριο remote για ένα repository που έχει δημιουργηθεί
+    με clone.
   \item \textbf{master:} Default branch για ένα repository.
   \item \textbf{HEAD:} Alias για το τελευταίο commit που είναι ορατό τη δεδομένη
     στιγμή. 
@@ -266,6 +266,10 @@ git config --global user.email "your@email.com"
     \item Αρχικοποίηση:
 \begin{verbatim}
 git init
+\end{verbatim}
+    \item Επισκόπηση unstaged, staged, untracked αρχείων:
+\begin{verbatim}
+git status
 \end{verbatim}
     \item Προσθήκη αρχείων στη staging area:
 \begin{verbatim}
@@ -326,7 +330,7 @@ git push
 \begin{verbatim}
 git remote update
 \end{verbatim}
-    \item Δημιουργία τοπικού αντιγράφου από ένα τυχόν repository:
+    \item Δημιουργία τοπικού αντιγράφου από ένα τυχόν branch:
 \begin{verbatim}
 git fetch <git://github.com/foo/bar.git> <branch>
 \end{verbatim}
@@ -475,11 +479,14 @@ emacs .gitignore
 \begin{frame}
   \frametitle{References}
   \begin{itemize}
-    \item GitHub tutorials
-    \item Git tutorials
+    \item GitHub tutorials: \\
+      \url{http://help.github.com/}
+    \item Git tutorials: \\
+      \url{http://www.kernel.org/pub/software/scm/git/docs/gittutorial.html}
     \item Git man pages
-    \item Torvalds talk @ Google
-    \item Full management model using Git:
+    \item Torvalds talk @ Google: \\
+      \url{http://youtu.be/4XpnKHJAok8}
+    \item Full management model using Git: \\
       \url{http://nvie.com/posts/a-successful-git-branching-model/}
     \item Git achievements
   \end{itemize}
