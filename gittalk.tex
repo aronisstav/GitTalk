@@ -87,10 +87,10 @@
       collaborators.
     \item Καταγράφουν συστηματικά:
       \begin{itemize}
-        \item ποιός
         \item πως
-        \item πότε και
         \item γιατί
+        \item ποιός και
+        \item πότε
       \end{itemize}
       αλλάζει τον κώδικα.
     \item Μπορούν να χρησιμοποιηθούν αποτελεσματικά και σε εργασίες που δεν
@@ -179,6 +179,7 @@
     \item PostgreSQL
     \item Debian
     \item X.org
+    \item Erlang/OTP
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -203,6 +204,13 @@
 \end{frame}
 
 \begin{frame}
+  \frametitle{Git}
+  \begin{center}
+    \includegraphics[width=8cm]{index1.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}
   \frametitle{Github}
   \framesubtitle{\url{https://github.com/}}
   Χρησιμεύει σαν ένα κεντρικό sync point:
@@ -218,93 +226,215 @@
   \tableofcontents[currentsection, hideothersubsections]
 \end{frame}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{Προκαταρκτικά...}
   \begin{itemize}
     \item Στήσιμο pseudo-central server ή Λογαριασμός στο github
     \item SSH keys για πιστοποίηση των collaborators
     \item Στήσιμο repository
+    \item User info στο .gitconfig
+\begin{verbatim}
+git config --global user.name "Firstname Lastname"
+git config --global user.email "your@email.com"
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{New project}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{New project}
   \begin{itemize}
-    \item git init
-    \item git add
-    \item git commit (-m, --amend)
-    \item git diff(tool)
-    \item git remote add
-    \item git push
+    \item Αρχικοποίηση:
+\begin{verbatim}
+git init
+\end{verbatim}
+    \item Προσθήκη αρχείων στη staging area:
+\begin{verbatim}
+git add <myfile.ext>
+\end{verbatim}
+    \item Commit των staged αρχείων στο repository
+\begin{verbatim}
+git commit
+\end{verbatim}
+    \item Καθορισμός alias για ένα remote repository:
+\begin{verbatim}
+git remote add <mirror> <git://github.com/foo/bar.git>
+\end{verbatim}
+    \item Σπρώξιμο των αλλαγών στο mirror:
+\begin{verbatim}
+git push <mirror> <branchname>
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{Existing project}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{Existing project}
   \begin{itemize}
     \item GitHub fork
-    \item git clone
-    \item git add
-    \item git commit (-m, --amend)
-    \item git push
+    \item Δημιουργία τοπικού repository:
+\begin{verbatim}
+git clone <git://github.com/foo/bar.git>
+\end{verbatim}
+    \item Επισκόπηση αλλαγών:
+\begin{verbatim}
+git diff(tool)
+\end{verbatim}
+    \item Staging όλων των αρχείων που έχουν αλλαγές:
+\begin{verbatim}
+git add .
+\end{verbatim}
+    \item Commit με ένα απλό one-liner message:
+\begin{verbatim}
+git commit -m "This is a typo fix in file X"
+\end{verbatim}
+    \item Σπρώξιμο των αλλαγών στο mirror:
+\begin{verbatim}
+git push
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{Collaboration}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{Collaboration}
   \begin{itemize}
-    \item git remote update
-    \item git merge
-    \item git pull
-    \item git mergetool
+    \item Συγχρονισμός των local copies των remote branches:
+\begin{verbatim}
+git remote update
+\end{verbatim}
+    \item Δημιουργία τοπικού αντιγράφου από ένα τυχόν repository:
+\begin{verbatim}
+git fetch <git://github.com/foo/bar.git> <branch>
+\end{verbatim}
+    \item Ενσωμάτωση των αλλαγών:
+\begin{verbatim}
+git merge FETCH-HEAD
+\end{verbatim}
+    \item Εναλλακτικά αν οι αλλαγές είναι στο τρέχον branch:
+\begin{verbatim}
+git pull
+\end{verbatim}
+    \item Επίλυση conflicts μετά από failed merge:
+\begin{verbatim}
+git mergetool
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{Experimentation}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{Experimentation}
   \begin{itemize}
-    \item git branch
-    \item git checkout
-    \item git push remote new\_branch
+    \item Δημιουργία νέου branch:
+\begin{verbatim}
+git branch <cool\_feature\_name>
+\end{verbatim}
+    \item Εστίαση του HEAD στο νέο branch:
+\begin{verbatim}
+git checkout <cool\_feature\_name>
+\end{verbatim}
     \item make
-    \item git merge (again)
+    \item Δημιουργία remote branch που παρακολουθεί το νεο:
+\begin{verbatim}
+git push <mirror> <cool\_feature\_name>
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{History}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Using git}
   \framesubtitle{History}
   \begin{itemize}
-    \item git log
-    \item git tree
-    \item git show
-    \item gitk
+    \item Εμφάνιση του ιστορικού:
+\begin{verbatim}
+git log
+\end{verbatim}
+    \item Custom command για γρηγορη επισκόπηση ιστορικού:
+\begin{verbatim}
+emacs ~/.gitconfig
+<< [alias]	
+	tree = log --oneline --decorate --graph >>
+git tree
+\end{verbatim}
+    \item Εμφάνιση ενός συγκεκριμένου commit:
+\begin{verbatim}
+git show <SHA1>
+\end{verbatim}
+    \item Χρήση του GUI για επισκόπηση ιστορικού:
+\begin{verbatim}
+gitk
+\end{verbatim}
+  \end{itemize}
+\end{frame}
+
+\subsection{More daily commands}
+
+\begin{frame}[fragile]
+  \frametitle{Using git}
+  \framesubtitle{More daily commands}
+  \begin{itemize}
+    \item Εμφάνιση branches:
+\begin{verbatim}
+git branch
+\end{verbatim}
+    \item Επισήμανση αρχείων για διαγραφή από το repository:
+\begin{verbatim}
+git rm
+\end{verbatim}
+    \item Επαναφορά του repository σε κάποιο προκαθορισμένο commit:
+\begin{verbatim}
+git reset HEAD
+git reset <SHA1> --hard
+\end{verbatim}
+    \item Επαναφορά ενός αρχείου όπως εμφανίζεται σε προκαθορισμένο commit:
+\begin{verbatim}
+git checkout <SHA1> -- <myfile.ext>
+\end{verbatim}
+    \item Εμφάνιση των τελευταίων references σε commits:
+\begin{verbatim}
+git reflog
+\end{verbatim}
   \end{itemize}
 \end{frame}
 
 \subsection{Advanced}
 
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Advanced}
   \framesubtitle{History}
   \begin{itemize}
-    \item Let's find the bug: git bisect
-    \item Polish a patch: git rebase
+    \item Let's find the bug:
+\begin{verbatim}
+git bisect
+\end{verbatim}\pause
+    \item Μορφοποίηση των commits:
+\begin{verbatim}
+git rebase -i
+\end{verbatim}\pause
+    \item Επιλεκτικό staging:
+\begin{verbatim}
+git add -i
+\end{verbatim}\pause
+    \item Προσωρινό καθάρισμα working space και επαναφορά:
+\begin{verbatim}
+git stash (pop)
+\end{verbatim}\pause
+    \item Εξαίρεση αρχείων από την παρακολούθηση:
+\begin{verbatim}
+emacs .gitignore
+\end{verbatim}\pause
     \item ACHIEVEMENTS!
   \end{itemize}
 \end{frame}
